@@ -85,6 +85,12 @@ class Framework(FrameworkBase, PySide.QtCore.QObject):
     def get_main_window(self):
         return self.main
 
+    def get_filename(self, mode):
+        if mode=="load":
+            return PySide.QtGui.QFileDialog.getOpenFileName()
+        else:
+            return PySide.QtGui.QFileDialog.getSaveFileName()
+
     def get_widgets_for_method(self, method):
         """
         Return a list of (text, widget) tuples

@@ -12,7 +12,7 @@ an optional get function.
 
 def get_volume(self):
     return self.volume
-    
+
 @slider(getfunc=get_volume)
 def volume(self, newval):
     self.volume=newval
@@ -67,8 +67,16 @@ class FrameworkBase(object):
         raise NotImplementedError("close")
 
     def display(self, o):
-        """Dsiaplys a UI for the decorated object o, blocking until dismissed"""
+        """
+        Displays a UI for the decorated object o,
+        blocking until dismissed
+        """
         self.display_widgets([self.get_obj_widget(o)])
+
+    def get_filename(self, mode="load"):
+        """Returns a user specified file name.
+        mode should be 'load' or 'save'"""
+        raise NotImplementedError("close")
 
 
 def metadata(name, props):
@@ -80,7 +88,7 @@ def metadata(name, props):
     >>> @metadata("mydata", {1:1, 2:4, "bob":"fish"})
     ... def myfunc():
     ...     print "my func"
-    ... 
+    ...
     >>> myfunc.mydata["bob"]
     'fish'
     """
@@ -91,14 +99,14 @@ def metadata(name, props):
         setattr(wrapped_metadata, name, props)
         return wrapped_metadata
     return metadata_imp
-    
+
 
 # file for some UI stuff where properties determine display properties
 def slider(getfunc=None, minimum=0, maximum=100, scale=1):
     """
     Decorator generator creates a decorator to suggest that any UI uses a
-    slider to set the given function. 
-    
+    slider to set the given function.
+
     An optional getfunc, if present, is used to get the current value at
     startup. It must be defined before this decorator is applied!
     See source file for examples
@@ -123,8 +131,8 @@ def slider(getfunc=None, minimum=0, maximum=100, scale=1):
 def combobox(options, getfunc=None):
     """
     Decorator generator creates a decorator to suggest that any UI uses a
-    combobox to set the given function. 
-    
+    combobox to set the given function.
+
     options is the set of available options presented to the user, converted
     to strings.
     An optional getfunc, if present, is used to get the current value at
@@ -141,7 +149,7 @@ def combobox(options, getfunc=None):
         return w_func
     return my_slider
 
-  
+
 def checkbox(getfunc=None):
     def my_slider(func):
         @metadata("_checkbox", dict(
